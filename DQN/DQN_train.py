@@ -51,13 +51,13 @@ def takeTrade(action, ohlc):
     close = ohlc[3]
 
     if action == 1:  # (long/short, entry, SL, TP)
-        sl = (unscaled_close - 0.0005 - data_min) / (data_max - data_min)
-        tp = (unscaled_close + 0.0015 - data_min) / (data_max - data_min)
+        sl = (unscaled_close - 0.0010 - data_min) / (data_max - data_min)
+        tp = (unscaled_close + 0.0030 - data_min) / (data_max - data_min)
         return action, close, sl, tp
 
     elif action == 2:
-        sl = (unscaled_close + 0.0005 - data_min) / (data_max - data_min)
-        tp = (unscaled_close - 0.0015 - data_min) / (data_max - data_min)
+        sl = (unscaled_close + 0.0010 - data_min) / (data_max - data_min)
+        tp = (unscaled_close - 0.0030 - data_min) / (data_max - data_min)
         return action, close, sl, tp
 
 
