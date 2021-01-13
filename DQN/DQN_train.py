@@ -34,13 +34,12 @@ def evalTrade(a, tr, next_step):
     return [0, 0]
 
 def evalPass(current, next):
+    # Reward pass if action prevented SL
     long = takeTrade(1, current[-1])
     short = takeTrade(2, current[-1])
-    if long[2] >= next[-1][3] and short[2] <= next[-1][1]:
-        return 0.5
-    elif long[2] >= next[-1][3] or short[2] <= next[-1][1]:
-        return 0.25
-    return -0.25
+    if long[2] >= next[-1][3] or short[2] <= next[-1][1]:
+        return 0.1
+    return 0
 
 
 def invScale(data, minimum, maximum):
