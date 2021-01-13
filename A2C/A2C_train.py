@@ -68,8 +68,7 @@ WINDOW_SIZE = 90
 EPISODE_LENGTH = 2500 - WINDOW_SIZE
 EPISODE_NUM = 6500
 
-agent = ActorCritic(WINDOW_SIZE, is_eval=True, actor_name='ep-1960-actor.h5', critic_name='ep-1960-critic.h5')
-# agent = ActorCritic(WINDOW_SIZE)
+agent = ActorCritic(WINDOW_SIZE)
 win, loss = 0, 0
 ps, lg, st = 0, 0, 0
 chkpnt = 0
