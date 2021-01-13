@@ -70,10 +70,9 @@ df = pd.read_csv('EU_M5_2017_2020.csv',
                  names=['Local time', 'Open', 'High', 'Low', 'Close', 'Volume'])
 df = df.drop('Volume', 1)
 
+data_max = df['High'].max()
+data_min = df['Low'].min()
 df = np.array(df)
-data_max = max([max(l) for l in df])
-data_min = min([min(l) for l in df])
-
 df = (df - data_min) / (data_max - data_min)
 
 MIN_MEM_SIZE = 128
