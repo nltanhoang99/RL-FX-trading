@@ -45,32 +45,31 @@ def takeTrade(action, ohlc):
 
     # (long/short, entry, SL, TP)
     if action == 1:
-        sl = (unscaled_close - 0.0005 - data_min) / (data_max - data_min)
-        tp = (unscaled_close + 0.0015 - data_min) / (data_max - data_min)
+        sl = (unscaled_close - 0.0010 - data_min) / (data_max - data_min)
+        tp = (unscaled_close + 0.0030 - data_min) / (data_max - data_min)
         return action, close, sl, tp
 
     elif action == 2:
-        sl = (unscaled_close + 0.0005 - data_min) / (data_max - data_min)
-        tp = (unscaled_close - 0.0015 - data_min) / (data_max - data_min)
+        sl = (unscaled_close + 0.0010 - data_min) / (data_max - data_min)
+        tp = (unscaled_close - 0.0030 - data_min) / (data_max - data_min)
         return action, close, sl, tp
 
 
 def evalPass(current, next):
-    # Reward for preventing SL and punish unnecessary pass
+    # Reward pass if action prevented SL
     long = takeTrade(1, current[-1])
     short = takeTrade(2, current[-1])
-    if long[2] >= next[-1][3] and short[2] <= next[-1][1]:
-        return 0.5
-    elif long[2] >= next[-1][3] or short[2] <= next[-1][1]:
-        return 0.25
-    return -0.25
+    if long[2] >= next[-1][3] or short[2] <= next[-1][1]:
+        return 0.1
+    return 0
 
 
 WINDOW_SIZE = 90
 EPISODE_LENGTH = 2500 - WINDOW_SIZE
 EPISODE_NUM = 6500
 
-agent = ActorCritic(WINDOW_SIZE)
+agent = ActorCritic(WINDOW_SIZE, is_eval=True, actor_name='ep-1960-actor.h5', critic_name='ep-1960-critic.h5')
+# agent = ActorCritic(WINDOW_SIZE)
 win, loss = 0, 0
 ps, lg, st = 0, 0, 0
 chkpnt = 0
@@ -92,10 +91,9 @@ for episode in range(EPISODE_NUM):
                      names=['Local time', 'Open', 'High', 'Low', 'Close', 'Volume'])
     df = df.drop('Volume', 1)
 
+    data_max = df['High'].max()
+    data_min = df['Low'].min()
     df = np.array(df)
-    data_max = max([max(l) for l in df])
-    data_min = min([min(l) for l in df])
-
     df = (df - data_min) / (data_max - data_min)
 
     ret = 0
