@@ -64,7 +64,7 @@ def evalPass(current, next):
     return 0
 
 
-WINDOW_SIZE = 90
+WINDOW_SIZE = 30
 EPISODE_LENGTH = 2500 - WINDOW_SIZE
 EPISODE_NUM = 6500
 
@@ -159,9 +159,6 @@ for episode in range(EPISODE_NUM):
 
         state = next_state
 
-    chkpnt += 1
-    if chkpnt == 20:
-        print("--- Saving models ---")
+    if episode % 25 == 0:
         agent.actor.save(f"ep-{episode}-actor.h5")
         agent.critic.save(f"ep-{episode}-critic.h5")
-        chkpnt = 0
