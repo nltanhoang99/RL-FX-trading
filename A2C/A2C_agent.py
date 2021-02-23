@@ -11,7 +11,7 @@ class ActorCritic:
         self.actions = []
         self.rewards = []
 
-        self.action_size = 3  # sit, long, short
+        self.action_size = 7  # sit, long, short
         self.in_trade = False
 
         if not is_eval:
@@ -24,7 +24,7 @@ class ActorCritic:
     def build_actor(self):
 
         model = tf.keras.models.Sequential()
-        model.add(tf.keras.layers.LSTM(128, input_shape=(self.state_size, 4)))
+        model.add(tf.keras.layers.LSTM(64, input_shape=(self.state_size, 4)))
         model.add(tf.keras.layers.Dense(self.action_size, activation='softmax'))
         opt = tf.keras.optimizers.Adam(learning_rate=0.000001)
         model.compile(loss='categorical_crossentropy', optimizer=opt)
@@ -34,7 +34,7 @@ class ActorCritic:
     def build_critic(self):
 
         model = tf.keras.models.Sequential()
-        model.add(tf.keras.layers.LSTM(128, input_shape=(self.state_size, 4)))
+        model.add(tf.keras.layers.LSTM(64, input_shape=(self.state_size, 4)))
         model.add(tf.keras.layers.Dense(1, activation='linear'))
         opt = tf.keras.optimizers.Adam(learning_rate=0.000001)
         model.compile(loss='mse', optimizer=opt)
@@ -83,7 +83,7 @@ class ActorCritic:
         advantages = discounted_r - values
         # training Actor and Critic networks
         print("--- TRAINING MODELS ---")
-        self.actor.fit(states, actions, sample_weight=advantages, epochs=1, verbose=0)
-        self.critic.fit(states, discounted_r, epochs=1, verbose=0)
+        self.actor.fit(states, actions, sample_weight=advantages, epochs=1, verbose=0, shuffle=True)
+        self.critic.fit(states, discounted_r, epochs=1, verbose=0, shuffle=True)
         # reset training memory
         self.states, self.actions, self.rewards = [], [], []
