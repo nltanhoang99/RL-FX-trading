@@ -24,7 +24,7 @@ class ActorCritic:
     def build_actor(self):
 
         model = tf.keras.models.Sequential()
-        model.add(tf.keras.layers.LSTM(64, input_shape=(self.state_size, 4)))
+        model.add(tf.keras.layers.LSTM(1024, input_shape=(self.state_size, 4)))
         model.add(tf.keras.layers.Dense(self.action_size, activation='softmax'))
         opt = tf.keras.optimizers.Adam(learning_rate=0.000001)
         model.compile(loss='categorical_crossentropy', optimizer=opt)
@@ -34,7 +34,7 @@ class ActorCritic:
     def build_critic(self):
 
         model = tf.keras.models.Sequential()
-        model.add(tf.keras.layers.LSTM(64, input_shape=(self.state_size, 4)))
+        model.add(tf.keras.layers.LSTM(1024, input_shape=(self.state_size, 4)))
         model.add(tf.keras.layers.Dense(1, activation='linear'))
         opt = tf.keras.optimizers.Adam(learning_rate=0.000001)
         model.compile(loss='mse', optimizer=opt)
