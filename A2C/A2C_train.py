@@ -178,5 +178,5 @@ for episode in range(EPISODE_NUM):
 
     if episode % 25 == 0:
         print("SAVING MODELS")
-        agent.actor.save(f"ep-{episode + 2800}-actor.h5")
-        agent.critic.save(f"ep-{episode + 2800}-critic.h5")
+        agent.actor.save(f"ep-{episode}-actor.h5")
+        agent.critic.save(f"ep-{episode}-critic.h5")
